@@ -55,9 +55,40 @@ async function setupGit() {
     process.exit(1);
   }
 
-  // Initialize git repository
-  if (!executeCommand('git init', 'Initializing git repository')) {
+  // Configure git user (if not already configured)
+  try {
+    execSync('git config user.name', { stdio: 'pipe' });
+  } catch (error) {
+    if (!executeCommand('git config user.name "Hepta Travel Developer"', 'Setting git user name')) {
+      process.exit(1);
+    }
+  }
+
+  try {
+    execSync('git config user.email', { stdio: 'pipe' });
+  } catch (error) {
+    if (!executeCommand('git config user.email "developer@hepta-travel.com"', 'Setting git user email')) {
+      process.exit(1);
+    }
+  }
+
+  // Configure line endings for Windows
+  if (!executeCommand('git config core.autocrlf true', 'Configuring line endings')) {
     process.exit(1);
+  }
+
+  if (!executeCommand('git config core.safecrlf false', 'Disabling CRLF warnings')) {
+    process.exit(1);
+  }
+
+  // Initialize git repository (if not already initialized)
+  try {
+    execSync('git rev-parse --is-inside-work-tree', { stdio: 'pipe' });
+    log('Git repository already initialized', 'yellow');
+  } catch (error) {
+    if (!executeCommand('git init', 'Initializing git repository')) {
+      process.exit(1);
+    }
   }
 
   // Add all files

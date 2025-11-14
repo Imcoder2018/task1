@@ -30,7 +30,8 @@
     "vercel:deploy": "cd frontend && vercel --prod",
     "vercel:preview": "cd frontend && vercel",
     "vercel:login": "cd frontend && vercel login",
-    "vercel:link": "cd frontend && vercel link"
+    "vercel:link": "cd frontend && vercel link",
+    "fix-git": "node scripts/fix-git.js"
   },
   "keywords": [],
   "author": "",
